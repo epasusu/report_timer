@@ -21,6 +21,7 @@
             align-items: center;
             position: relative;
             overflow-x: hidden;
+            overflow-y: auto;
         }
 
         .container {
@@ -30,6 +31,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            flex: 1;
         }
 
         h1 {
@@ -57,7 +59,7 @@
             font-size: clamp(1.3rem, 2.5vw, 1.8rem);
         }
 
-        .input-group {
+        .settings-row {
             display: flex;
             justify-content: space-between;
             gap: clamp(15px, 2vw, 25px);
@@ -66,6 +68,33 @@
 
         .input-field {
             flex: 1;
+        }
+
+        .checkbox-field {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+        }
+
+        .checkbox-field label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            font-size: clamp(1rem, 1.8vw, 1.2rem);
+            color: #ccc;
+            user-select: none;
+        }
+
+        .checkbox-field input[type="checkbox"] {
+            width: 22px;
+            height: 22px;
+            margin-right: 12px;
+            cursor: pointer;
+            accent-color: #4dabf7;
         }
 
         label {
@@ -91,12 +120,16 @@
             border-color: #4dabf7;
         }
 
+        input[type="number"]:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background: #2a2a2a;
+        }
+
         .timer-display {
             width: 100%;
             max-width: 1200px;
-            height: auto;
-            min-height: 50vh;
-            max-height: 70vh;
+            min-height: 40vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -106,20 +139,23 @@
             border-radius: 20px;
             background: rgba(0,0,0,0.3);
             padding: clamp(10px, 2vw, 20px);
+            flex: 1;
         }
 
         .time {
-            font-size: min(30vw, 40vh);
+            font-size: clamp(4rem, 20vmin, 40vmin);
             font-weight: 800;
             font-family: 'Courier New', monospace;
             line-height: 1;
             text-shadow: 0 5px 15px rgba(0,0,0,0.5);
             transition: all 0.3s ease;
-            letter-spacing: -2px;
+            letter-spacing: -1px;
             text-align: center;
             width: 100%;
             overflow: hidden;
             padding: 0 10px;
+            word-break: keep-all;
+            white-space: nowrap;
         }
 
         .phase-label {
@@ -132,6 +168,7 @@
             background: rgba(255,255,255,0.1);
             width: fit-content;
             max-width: 90%;
+            word-break: break-word;
         }
 
         /* Цвета для разных фаз */
@@ -167,7 +204,7 @@
             color: white;
         }
 
-        .btn-start:hover {
+        .btn-start:hover:not(:disabled) {
             background: #27ae60;
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(46, 204, 113, 0.3);
@@ -178,7 +215,7 @@
             color: white;
         }
 
-        .btn-pause:hover {
+        .btn-pause:hover:not(:disabled) {
             background: #2980b9;
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
@@ -189,7 +226,7 @@
             color: white;
         }
 
-        .btn-stop:hover {
+        .btn-stop:hover:not(:disabled) {
             background: #c0392b;
             transform: translateY(-2px);
             box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
@@ -206,6 +243,9 @@
             box-shadow: 0 5px 15px rgba(155, 89, 182, 0.3);
         }
 
+        .btn-start:disabled,
+        .btn-pause:disabled,
+        .btn-stop:disabled,
         .btn-next:disabled {
             background: #6c757d;
             cursor: not-allowed;
@@ -235,18 +275,17 @@
         }
 
         @media (max-width: 768px) {
-            .input-group {
+            .settings-row {
                 flex-direction: column;
                 gap: 15px;
             }
             
             .timer-display {
-                min-height: 40vh;
-                max-height: 60vh;
+                min-height: 35vh;
             }
             
             .time {
-                font-size: min(40vw, 35vh);
+                font-size: clamp(3rem, 18vmin, 35vmin);
             }
             
             .phase-label {
@@ -275,14 +314,14 @@
             }
             
             .timer-display {
-                min-height: 35vh;
+                min-height: 30vh;
                 margin: 15px 0;
                 border-radius: 15px;
             }
             
             .time {
-                font-size: min(45vw, 30vh);
-                letter-spacing: -1px;
+                font-size: clamp(2.5rem, 16vmin, 30vmin);
+                letter-spacing: -0.5px;
             }
             
             .phase-label {
@@ -314,12 +353,8 @@
                 max-width: 1600px;
             }
             
-            .timer-display {
-                max-height: 60vh;
-            }
-            
             .time {
-                font-size: min(25vw, 30vh);
+                font-size: clamp(5rem, 25vmin, 35vmin);
             }
             
             .phase-label {
@@ -333,21 +368,15 @@
             }
         }
 
-        /* Анимация для плавного изменения размера */
-        .time, .phase-label, button, .settings, .timer-display {
-            transition: all 0.3s ease;
-        }
-
         /* Оптимизация для ландшафтной ориентации на мобильных */
         @media (max-height: 600px) and (orientation: landscape) {
             .timer-display {
-                min-height: 60vh;
-                max-height: 70vh;
+                min-height: 50vh;
                 margin: 10px 0;
             }
             
             .time {
-                font-size: min(30vw, 40vh);
+                font-size: clamp(3rem, 15vmin, 25vmin);
             }
             
             .phase-label {
@@ -372,7 +401,15 @@
         
         <div class="settings">
             <h2>Настройки времени</h2>
-            <div class="input-group">
+            
+            <div class="checkbox-field">
+                <label for="includeDiscussion">
+                    <input type="checkbox" id="includeDiscussion" checked>
+                    Включить фазу "Обсуждение"
+                </label>
+            </div>
+            
+            <div class="settings-row">
                 <div class="input-field">
                     <label for="presentationTime">Доклад (минуты)</label>
                     <input type="number" id="presentationTime" min="1" max="60" value="5">
@@ -422,22 +459,53 @@
         const questionsTimeInput = document.getElementById('questionsTime');
         const discussionTimeInput = document.getElementById('discussionTime');
         
+        // Чекбокс включения фазы обсуждения
+        const includeDiscussionCheckbox = document.getElementById('includeDiscussion');
+        
         // Состояние таймера
         let timer = null;
         let isRunning = false;
         let isPaused = false;
-        let currentPhase = 0; // 0 - доклад, 1 - вопросы, 2 - обсуждение
-        let timeLeft = 0; // В секундах
+        let currentPhase = 0;
+        let timeLeft = 0;
+        let includeDiscussion = true;
         
         // Цвета и названия фаз
-        const phases = [
+        let phases = [
             { name: 'Доклад', className: 'presentation' },
             { name: 'Ответы на вопросы', className: 'questions' },
             { name: 'Обсуждение', className: 'discussion' }
         ];
         
+        // Флаг для предотвращения множественных кликов
+        let isProcessingClick = false;
+        
+        // Обновление списка фаз в зависимости от настроек
+        function updatePhases() {
+            if (includeDiscussion) {
+                phases = [
+                    { name: 'Доклад', className: 'presentation' },
+                    { name: 'Ответы на вопросы', className: 'questions' },
+                    { name: 'Обсуждение', className: 'discussion' }
+                ];
+            } else {
+                phases = [
+                    { name: 'Доклад', className: 'presentation' },
+                    { name: 'Ответы на вопросы', className: 'questions' }
+                ];
+            }
+        }
+        
+        // Обновление состояния поля ввода времени обсуждения
+        function updateDiscussionInput() {
+            discussionTimeInput.disabled = !includeDiscussion;
+        }
+        
         // Инициализация
         function init() {
+            includeDiscussion = includeDiscussionCheckbox.checked;
+            updatePhases();
+            updateDiscussionInput();
             resetTimer();
             updateDisplay();
         }
@@ -454,11 +522,13 @@
             isRunning = false;
             isPaused = false;
             currentPhase = 0;
+            isProcessingClick = false;
             
             // Устанавливаем начальное время для первой фазы
             const presentationMinutes = parseInt(presentationTimeInput.value) || 5;
             timeLeft = presentationMinutes * 60;
             
+            updatePhases();
             updateDisplay();
             updateButtons();
             statusEl.textContent = 'Таймер сброшен и остановлен';
@@ -466,10 +536,17 @@
         
         // Запуск таймера
         function startTimer() {
-            if (isRunning && !isPaused) return;
+            if (isProcessingClick) return;
+            isProcessingClick = true;
+            
+            if (isRunning && !isPaused) {
+                isProcessingClick = false;
+                return;
+            }
             
             if (!isRunning) {
                 isRunning = true;
+                isPaused = false;
                 statusEl.textContent = `Таймер запущен: ${phases[currentPhase].name}`;
             } else if (isPaused) {
                 isPaused = false;
@@ -478,6 +555,13 @@
             
             updateButtons();
             
+            // Очищаем предыдущий таймер, если он существует
+            if (timer) {
+                clearInterval(timer);
+                timer = null;
+            }
+            
+            // Запускаем новый таймер
             timer = setInterval(() => {
                 timeLeft--;
                 
@@ -486,7 +570,8 @@
                     timer = null;
                     timeLeft = 0;
                     
-                    if (currentPhase < 2) {
+                    // Проверяем, есть ли следующая фаза
+                    if (currentPhase < phases.length - 1) {
                         currentPhase++;
                         setupNextPhase();
                         updateDisplay();
@@ -498,56 +583,15 @@
                         statusEl.textContent = `Автоматический переход: ${phases[currentPhase].name}`;
                         
                         // Запускаем таймер для следующей фазы
-                        timer = setInterval(() => {
-                            timeLeft--;
-                            
-                            if (timeLeft <= 0) {
-                                clearInterval(timer);
-                                timer = null;
-                                timeLeft = 0;
-                                
-                                if (currentPhase < 2) {
-                                    currentPhase++;
-                                    setupNextPhase();
-                                    updateDisplay();
-                                    updateButtons();
-                                    
-                                    // Автоматический запуск следующей фазы
-                                    isRunning = true;
-                                    isPaused = false;
-                                    statusEl.textContent = `Автоматический переход: ${phases[currentPhase].name}`;
-                                    
-                                    // Запускаем таймер для следующей фазы
-                                    timer = setInterval(() => {
-                                        timeLeft--;
-                                        
-                                        if (timeLeft <= 0) {
-                                            clearInterval(timer);
-                                            timer = null;
-                                            timeLeft = 0;
-                                            isRunning = false;
-                                            statusEl.textContent = 'Все этапы завершены!';
-                                            updateButtons();
-                                            playBeep();
-                                        }
-                                        
-                                        updateDisplay();
-                                    }, 1000);
-                                } else {
-                                    isRunning = false;
-                                    statusEl.textContent = 'Все этапы завершены!';
-                                    updateButtons();
-                                    playBeep();
-                                }
-                                
-                                return;
-                            }
-                            
-                            updateDisplay();
-                        }, 1000);
+                        setTimeout(() => {
+                            startTimer();
+                        }, 100);
                     } else {
+                        // Все фазы завершены
                         isRunning = false;
-                        statusEl.textContent = 'Все этапы завершены!';
+                        statusEl.textContent = includeDiscussion ? 
+                            'Все этапы завершены!' : 
+                            'Доклад и ответы на вопросы завершены!';
                         updateButtons();
                         playBeep();
                     }
@@ -558,11 +602,16 @@
                 
                 updateDisplay();
             }, 1000);
+            
+            setTimeout(() => {
+                isProcessingClick = false;
+            }, 300);
         }
         
         // Пауза таймера
         function pauseTimer() {
-            if (!isRunning) return;
+            if (isProcessingClick || !isRunning || isPaused) return;
+            isProcessingClick = true;
             
             isPaused = true;
             isRunning = false;
@@ -574,11 +623,20 @@
             
             statusEl.textContent = 'Таймер на паузе';
             updateButtons();
+            
+            setTimeout(() => {
+                isProcessingClick = false;
+            }, 300);
         }
         
         // Переход к следующей фазе
         function nextPhase() {
-            if (currentPhase >= 2) return;
+            if (isProcessingClick || currentPhase >= phases.length - 1) {
+                isProcessingClick = false;
+                return;
+            }
+            
+            isProcessingClick = true;
             
             if (timer) {
                 clearInterval(timer);
@@ -594,6 +652,10 @@
             statusEl.textContent = `Переход к фазе: ${phases[currentPhase].name}. Для запуска нажмите "Старт"`;
             updateDisplay();
             updateButtons();
+            
+            setTimeout(() => {
+                isProcessingClick = false;
+            }, 300);
         }
         
         // Настройка следующей фазы
@@ -601,13 +663,13 @@
             let minutes = 0;
             
             switch(currentPhase) {
-                case 0:
+                case 0: // Доклад
                     minutes = parseInt(presentationTimeInput.value) || 5;
                     break;
-                case 1:
+                case 1: // Ответы на вопросы
                     minutes = parseInt(questionsTimeInput.value) || 7;
                     break;
-                case 2:
+                case 2: // Обсуждение (если включено)
                     minutes = parseInt(discussionTimeInput.value) || 3;
                     break;
             }
@@ -617,15 +679,19 @@
         
         // Обновление отображения
         function updateDisplay() {
+            // Форматирование времени MM:SS
             const minutes = Math.floor(timeLeft / 60);
             const seconds = timeLeft % 60;
             timeDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
             
+            // Обновление названия фазы и цвета
             phaseLabel.textContent = phases[currentPhase].name;
             
+            // Удаляем все классы цветов
             timeDisplay.classList.remove('presentation', 'questions', 'discussion');
             phaseLabel.classList.remove('presentation', 'questions', 'discussion');
             
+            // Добавляем текущий класс цвета
             timeDisplay.classList.add(phases[currentPhase].className);
             phaseLabel.classList.add(phases[currentPhase].className);
         }
@@ -635,9 +701,17 @@
             startBtn.disabled = isRunning && !isPaused;
             pauseBtn.disabled = !isRunning || isPaused;
             stopBtn.disabled = false;
-            nextBtn.disabled = currentPhase === 2;
             
+            // Кнопка "Далее" неактивна на последней фазе
+            nextBtn.disabled = currentPhase >= phases.length - 1;
+            
+            // Меняем текст кнопки Старт
             startBtn.textContent = isPaused ? 'Продолжить' : 'Старт';
+            
+            // Если таймер не запущен, кнопка пауза должна быть "Пауза"
+            if (!isRunning) {
+                pauseBtn.textContent = 'Пауза';
+            }
         }
         
         // Воспроизведение звукового сигнала
@@ -664,11 +738,25 @@
             }
         }
         
+        // Обработчики событий
         startBtn.addEventListener('click', startTimer);
         pauseBtn.addEventListener('click', pauseTimer);
         stopBtn.addEventListener('click', resetTimer);
         nextBtn.addEventListener('click', nextPhase);
         
+        // Обработчик чекбокса включения/выключения фазы обсуждения
+        includeDiscussionCheckbox.addEventListener('change', function() {
+            includeDiscussion = this.checked;
+            updatePhases();
+            updateDiscussionInput();
+            
+            // Если таймер не запущен, сбрасываем его
+            if (!isRunning) {
+                resetTimer();
+            }
+        });
+        
+        // Обновление таймера при изменении настроек (только если таймер не запущен)
         function updateTimeFromInputs() {
             if (!isRunning) {
                 let minutes = 0;
@@ -697,8 +785,10 @@
         discussionTimeInput.addEventListener('change', updateTimeFromInputs);
         discussionTimeInput.addEventListener('input', updateTimeFromInputs);
         
+        // Инициализация при загрузке
         window.addEventListener('DOMContentLoaded', init);
         
+        // Предотвращение ввода недопустимых значений
         document.querySelectorAll('input[type="number"]').forEach(input => {
             input.addEventListener('input', () => {
                 let value = parseInt(input.value);
@@ -711,6 +801,15 @@
                 if (input.value === '') input.value = input.defaultValue;
                 updateTimeFromInputs();
             });
+        });
+        
+        // Оптимизация для изменения размеров окна
+        let resizeTimeout;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                updateDisplay();
+            }, 100);
         });
     </script>
 </body>
